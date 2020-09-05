@@ -22,7 +22,7 @@ function preload ()
 {
     this.load.image('sky', 'img/sky.png');
     this.load.image('ground', 'img/ground.png');
-    this.load.spritesheet('circle', 'img/circle.png',{ frameWidth: 32, frameHeight: 48 }
+    this.load.spritesheet('circle', 'img/avatar.png',{ frameWidth: 32, frameHeight: 48 }
     );
 }
 var platforms;
@@ -67,13 +67,13 @@ function update ()
     cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown)
 {
-    player.setVelocityX(-160);
+    player.setVelocityX(-140);
 
     player.anims.play('left', true);
 }
 else if (cursors.right.isDown)
 {
-    player.setVelocityX(160);
+    player.setVelocityX(140);
 
     player.anims.play('right', true);
 }
