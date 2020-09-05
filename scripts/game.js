@@ -37,7 +37,10 @@ function create ()
     player = this.physics.add.sprite(400,250,'circle');
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    
+    this.cameras.main.setBounds(0,0,500,500);
+    var cam = this.cameras.main;
+    cam.startFollow(player);
+    cam.zoomTo(2,2000);
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('circle', { start: 0, end: 3 }),
@@ -67,15 +70,16 @@ function update ()
     cursors = this.input.keyboard.createCursorKeys();
     if (cursors.left.isDown)
 {
-    player.setVelocityX(-140);
+    player.setVelocityX(-110);
 
     player.anims.play('left', true);
 }
 else if (cursors.right.isDown)
 {
-    player.setVelocityX(140);
+    player.setVelocityX(110);
 
     player.anims.play('right', true);
+    
 }
 else
 {
@@ -86,6 +90,6 @@ else
 
 if (cursors.up.isDown && player.body.touching.down)
 {
-    player.setVelocityY(-230);
+    player.setVelocityY(-330);
 }
 }
