@@ -47,13 +47,27 @@ function create ()
     var cam = this.cameras.main;
     cam.startFollow(player);
     cam.zoomTo(2,2000);
+    //enemy ai
     this.anims.create({
-        key: 'walk',
+        key: 'walk-left',
         frames: this.anims.generateFrameNumbers('enemy',{ start: 0, end: 3}),
         frameRate: 10,
         repeat: -1
     });
 
+    this.anims.create({
+        key: 'turn-robot',
+        frames: [ { key: 'enemy', frame: 4 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'walk-right',
+        frames: this.anims.generateFrameNumbers('enemy', { start: 5, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    //player sprite
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('circle', { start: 0, end: 3 }),
@@ -105,12 +119,16 @@ function update () {
     if(Phaser.Math.Distance.Between(player.x,player.y,enemy.x,enemy.y) < 100) {
         
         if (player.x < enemy.x){
-            enemy.anims.play('walk', true);
+            enemy.anims.play('walk-left', true);
             enemy.setVelocityX(-50);
         }
         else if (player.x > enemy.x ) {
+            enemy.anims.play('walk-right', true);
             enemy.setVelocityX(50);
         }
+    }else if(Phaser.Math.Distance.Between(player.x,player.y,enemy.x,enemy.y) > 100){
+        enemy.anims.play('turn-robot');
+        enemy.setVelocityX(0);
     }
 
 }
