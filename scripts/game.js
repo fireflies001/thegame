@@ -26,10 +26,16 @@ function preload ()
     );
     this.load.spritesheet('enemy', 'img/enemy1.png', { frameWidth: 32, frameHeight: 48 }
     );
+    this.load.image('bullet', 'img/bullet.png', { frameWidth: 23, frameHeight: 32}
+    );
+
 }
 var platforms;
 var player;
 var enemy;
+var bullet;
+var score = 0;
+var scoreText;
 function create ()
 {
     this.add.image(250,250, 'sky');
@@ -42,12 +48,20 @@ function create ()
     enemy = this.physics.add.sprite(400,250, 'enemy');
     enemy.setBounce(0.2);
     enemy.setCollideWorldBounds(true);
-
     this.cameras.main.setBounds(0,0,500,500);
-    var cam = this.cameras.main;
-    cam.startFollow(player);
-    cam.zoomTo(2,2000);
-    //enemy ai
+    // var cam = this.cameras.main;
+    // cam.startFollow(player);
+    // cam.zoomTo(2,2000);
+    bullet = this.physics.add.group({
+        key: 'bullet',
+        repeat: 10,
+        setXY: {x: 12, y: 0, stepX: 70}
+    });
+    scoreText = this.add.text(16,16, 'Score: 0', {fontSize: '32px', fill: '#000'});
+    bullet.children.iterate(function (child) {
+        child.setBounceY(Phaser.Math.FloatBetween(0.4,0.8));
+    });
+
     this.anims.create({
         key: 'walk-left',
         frames: this.anims.generateFrameNumbers('enemy',{ start: 0, end: 3}),
@@ -92,6 +106,16 @@ function create ()
     this.physics.add.collider(platforms,player);
     this.physics.add.collider(platforms, enemy);
     this.physics.add.collider(player, enemy);
+    this.physics.add.collider(bullet, platforms);
+    this.physics.add.overlap(player, bullet, collectBullet,null,this);
+}
+
+function collectBullet (_player, bullet) {
+    bullet.disableBody(true, true);
+
+    score += 10;
+    scoreText.setText('Score: ' + score);
+    console.log(score);
 }
 
 function update () {
